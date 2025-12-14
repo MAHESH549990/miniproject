@@ -1,0 +1,157 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ---------------- BODY & BACKGROUND ---------------- */
+body {
+  background: url('total.png.png') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #333;
+}
+
+/* Optional overlay for readability */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.85);
+  z-index: -1;
+}
+
+/* Page title */
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 32px;
+  color: #333;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+}
+
+/* Table container */
+table {
+  width: 100%;
+  max-width: 950px;
+  border-collapse: collapse;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Table header */
+th {
+  background-color: #2c3e50;
+  color: #fff;
+  font-weight: bold;
+  padding: 12px 15px;
+  text-align: center;
+}
+
+/* Table cells */
+td {
+  padding: 12px 15px;
+  text-align: center;
+  font-size: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Alternate row color */
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Hover effect */
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Grand total row */
+.grand-total td {
+  background-color: #ffeeba;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Buttons container */
+.cart-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* Back to Menu button */
+button {
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Back button style */
+.cart-buttons button:nth-child(1) {
+  background-color: #5a9bd5;
+  color: #fff;
+}
+
+.cart-buttons button:nth-child(1):hover {
+  background-color: #407ec9;
+  box-shadow: 0 4px 15px rgba(64, 126, 201, 0.5);
+}
+
+/* Place All Orders button style */
+.cart-buttons button:nth-child(2) {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.cart-buttons button:nth-child(2):hover {
+  background-color: #218838;
+  box-shadow: 0 4px 15px rgba(33, 136, 56, 0.5);
+}
+
+/* Remove button in table */
+button.remove-btn {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #dc3545;
+  color: #fff;
+  transition: all 0.2s ease;
+}
+
+button.remove-btn:hover {
+  background-color: #c82333;
+  box-shadow: 0 4px 10px rgba(220, 50, 65, 0.5);
+}
+
+/* Responsive */
+@media screen and (max-width: 480px) {
+  table, th, td {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .cart-buttons button, button.remove-btn {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px 0;
+  }
+}

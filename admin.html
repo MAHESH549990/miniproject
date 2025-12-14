@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <header>
+    <h1>Admin Dashboard</h1>
+    <br/><br/>
+    <div class="nav-links">
+      <a href="lo.html">View Menu</a>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <section class="food-actions">
+      <h2>Add Food</h2>
+<input type="text" id="foodName" placeholder="Food Name">
+<input type="number" id="foodPrice" placeholder="Price">
+<input type="file" id="foodImg" accept="image/*">
+<button onclick="addFood()">Add Food</button>
+
+      <h2>Remove Food</h2>
+      <input type="text" id="removeName" placeholder="Food Name">
+      <button onclick="removeFood()">Remove Food</button>
+    </section>
+
+    <section class="food-list">
+      <h2>Current Menu</h2>
+      <table id="foodTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="customer-list">
+      <h2>Customer Visits & Orders</h2>
+      <table id="customerTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Email</th>
+            <th>Last Visit</th>
+            <th>Orders</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="lo.js"></script>
+</body>
+</html>

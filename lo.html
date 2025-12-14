@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food Delivery</title>
+  <link rel="stylesheet" href="lo.css" />
+</head>
+<body>
+  <header>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search food..." onkeyup="searchFood()" />
+      <button>🔍</button>
+    </div>
+    <div class="nav-links">
+      <a href="adminlogin.html">Admin</a>
+      <a href="about.html">About</a>
+    </div>
+  </header>
+  <section class="menu">
+    <h2>Our Food Delivery System</h2>
+    <div id="menuContainer" class="menu-items"></div>
+  </section>
+  <footer>
+    <button id="addToCartBtn">View Cart</button>
+    <button id="viewOrderBtn">View Orders</button>
+  </footer>
+
+  <script src="lo.js"></script>
+</body>
+</html>

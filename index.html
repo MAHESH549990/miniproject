@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In</title>
+  <link rel="stylesheet" href="index.css">
+  <script>
+    function login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        alert("⚠️ Please enter both email and password.");
+        return;
+      }
+
+      if (!email.endsWith("@gmail.com")) {
+        alert("Please enter a valid Gmail address..");
+        return;
+      }
+
+      const visitTime = new Date().toLocaleString();
+
+      // Get existing users
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      // Add or update user record
+      const existingUser = users.find(u => u.email === email);
+      if (existingUser) {
+        existingUser.lastVisit = visitTime;
+      } else {
+        users.push({ email, password, lastVisit: visitTime });
+      }
+
+      // Save back to localStorage
+      localStorage.setItem("users", JSON.stringify(users));
+
+      // Set currently logged-in user
+      localStorage.setItem("currentUser", email);
+
+      alert("✅ Login successful!");
+      window.location.href = "lo.html";
+    }
+  </script>
+</head>
+<body>
+  <div class="Login">
+    <h1><b>Login</b></h1>
+    <h4>Enter your Gmail credentials</h4>
+
+    <label for="email">Email address</label><br><br>
+    <input type="email" id="email" placeholder="Enter your Gmail" required><br><br>
+
+    <label for="password">Password</label><br><br>
+    <input type="password" id="password" placeholder="Enter your password" required><br><br>
+
+    <button onclick="login()">LOGIN</button>
+  </div>
+</body>
+</html>

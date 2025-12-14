@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Sign In</title>
+  <link rel="stylesheet" href="adminlogin.css">
+  <script>
+    function login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!email || !password) {
+        alert("⚠️ Please enter both email and password.");
+        return;
+      }
+
+      // Hardcoded admin credentials
+      if (email === "mohanbhattadmin@gmail.com" && password === "mahesh7668") {
+        alert("✅ Login successful!");
+        window.location.href = "admin.html"; // Redirect to admin page
+      } else {
+        alert("❌ Invalid email or password.");
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Admin Login</h1>
+    <p>Sign in to manage food items</p>
+
+    <label for="email">Email Address</label>
+    <input type="email" id="email" placeholder="Enter email address" required>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter password" required>
+
+    <button type="button" onclick="login()">Login</button>
+  </div>
+</body>
+</html>

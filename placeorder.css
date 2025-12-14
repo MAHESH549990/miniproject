@@ -1,0 +1,227 @@
+/* ---------------------------------- */
+/*  RESET STYLES  */
+/* ---------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ---------------------------------- */
+/*  BODY & BACKGROUND  */
+/* ---------------------------------- */
+body {
+  background: url('backgroundimages.png') no-repeat center center fixed;
+  background-size: cover;       /* full-screen sharp background */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333333;
+  padding: 20px;
+}
+
+/* Optional overlay for readability (adjust alpha to reduce blur) */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1); /* subtle dark overlay */
+  z-index: -1;
+}
+
+/* ---------------------------------- */
+/*  PLACE ORDER BOX  */
+/* ---------------------------------- */
+.order-box {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 40px 35px;
+  width: 400px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-height: 90vh;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+.order-box:hover {
+  transform: translateY(-5px);
+}
+
+.order-box h2 {
+  font-size: 26px;
+  margin-bottom: 25px;
+  color: #333;
+  letter-spacing: 0.5px;
+}
+
+.item-info p {
+  font-size: 16px;
+  margin: 10px 0;
+  color: #555;
+}
+.menu-btn {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  background-color: aqua; /* soft blue */
+  color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.menu-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(90, 155, 213, 0.5);
+}
+
+
+label {
+  display: block;
+  margin: 20px 0 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+input[type="number"] {
+  width: 80px;
+  padding: 10px;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+input[type="number"]:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 6px rgba(40, 167, 69, 0.3);
+}
+
+.order-summary {
+  margin-top: 25px;
+  padding: 20px;
+  border-left: 5px solid #28a745;
+  border-radius: 10px;
+  background-color: #eaf9ef;
+  color: #155724;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.order-summary h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #28a745;
+}
+
+/* Buttons */
+.buttons, .cart-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  gap: 15px;
+}
+
+.buttons button, .cart-buttons button {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.place-btn {
+  background-color: #28a745;
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+}
+
+.place-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(40, 167, 69, 0.5);
+}
+
+.cart-btn {
+  background-color: #007bff;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+.cart-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.5);
+}
+
+/* ---------------------------------- */
+/*  TABLES FOR CART AND ORDERS  */
+/* ---------------------------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: rgba(255,255,255,0.95);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+thead tr {
+  background-color: #28a745;
+  color: #fff;
+  text-align: left;
+}
+
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+.grand-total {
+  background-color: #f1f1f1;
+  font-weight: bold;
+  color: #333;
+}
+
+.remove-btn {
+  background-color: #dc3545;
+  color: #fff;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  background-color: #c82333;
+}
+
+/* Responsive Scroll */
+@media screen and (max-width: 480px) {
+  .order-box {
+    width: 90%;
+    padding: 30px 20px;
+  }
+
+  th, td {
+    padding: 10px;
+  }
+
+  input[type="number"] {
+    width: 60px;
+  }
+}

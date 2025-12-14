@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+
+  <h1>Your Cart</h1>
+
+  <table id="cartTable">
+    <thead>
+      <tr>
+        <th>Item Name</th>
+        <th>Price (₹)</th>
+        <th>Quantity</th>
+        <th>Total (₹)</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="cart-buttons">
+    <button onclick="window.location.href='lo.html'">⬅ Back to Menu</button>
+    <button onclick="placeCartOrders()">✅ Place All Orders</button>
+  </div>
+
+  <script>
+    const cartTableBody = document.querySelector("#cartTable tbody");
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const currentUser = localStorage.getItem("currentUser");
+
+    function renderCart() {
+      cartTableBody.innerHTML = "";
+      if (cart.length === 0) {
+        cartTableBody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align:center;">🛒 Your cart is empty</td>
+          </tr>
+        `;
+        return;
+      }
+
+      let grandTotal = 0;
+      cart.forEach((item, index) => {
+        const quantity = item.quantity ?? 1;
+        const total = item.price * quantity;
+        grandTotal += total;
+
+        cartTableBody.innerHTML += `
+          <tr>
+            <td>${item.name}</td>
+            <td>${item.price}</td>
+            <td>${quantity}</td>
+            <td>${total}</td>
+            <td><button class="remove-btn" onclick="removeItem(${index})">Remove</button></td>
+          </tr>
+        `;
+      });
+
+      // Grand total row
+      cartTableBody.innerHTML += `
+        <tr class="grand-total">
+          <td colspan="3"><strong>Grand Total</strong></td>
+          <td colspan="2"><strong>₹${grandTotal}</strong></td>
+        </tr>
+      `;
+    }
+
+    // Remove an item from cart
+    function removeItem(index) {
+      if (confirm("Are you sure you want to remove this item from the cart?")) {
+        cart.splice(index, 1); // Remove the item
+        localStorage.setItem("cart", JSON.stringify(cart)); // Save cart
+        renderCart(); // Re-render table
+      }
+    }
+
+    // Place all cart items as orders
+    function placeCartOrders() {
+      if (!currentUser) {
+        alert("⚠️ Please login first!");
+        window.location.href = "index.html";
+        return;
+      }
+
+      if (cart.length === 0) {
+        alert("🛒 Your cart is empty!");
+        return;
+      }
+
+      let userOrders = JSON.parse(localStorage.getItem("userOrders")) || [];
+      let existing = userOrders.find(u => u.email === currentUser);
+
+      cart.forEach(item => {
+        const orderData = {
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity ?? 1,
+          total: (item.price * (item.quantity ?? 1)),
+          time: new Date().toLocaleString()
+        };
+
+        if (existing) {
+          existing.orders.push(orderData);
+        } else {
+          userOrders.push({ email: currentUser, orders: [orderData] });
+        }
+      });
+
+      localStorage.setItem("userOrders", JSON.stringify(userOrders));
+      localStorage.setItem("cart", JSON.stringify([])); // Clear cart
+      alert("✅ All cart items have been placed as orders!");
+      window.location.href = "lo.html";
+    }
+
+    renderCart();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Place Order</title>
+  <link rel="stylesheet" href="placeorder.css">
+  <script src="lo.js" defer></script>
+</head>
+<body>
+
+  <div class="order-box">
+    <h2>Confirm Your Order</h2>
+
+    <div class="item-info">
+      <p><strong>Item:</strong> <span id="itemName">Loading...</span></p>
+      <p><strong>Price:</strong> ₹<span id="itemPrice">0</span></p>
+    </div>
+
+    <label for="qty">Quantity</label>
+    <input type="number" id="qty" value="1" min="1">
+
+    <div class="order-summary" id="orderSummary"></div>
+
+  <div class="buttons">
+  <button class="place-btn" onclick="confirmOrder()">Place Order</button>
+  <button class="cart-btn" onclick="addToCart()">Add to Cart</button>
+  <button class="menu-btn" onclick="goBackToMenu()">⬅ Back to Menu</button>
+</div>
+
+  </div>
+
+  <script>
+    const item = JSON.parse(localStorage.getItem("selectedItem"));
+
+    if (item) {
+      document.getElementById("itemName").innerText = item.name;
+      document.getElementById("itemPrice").innerText = item.price;
+    }
+
+    // ✅ Place Order function
+    function confirmOrder() {
+      const qty = parseInt(document.getElementById("qty").value);
+      if (!item) return alert("❌ No item selected");
+      if (isNaN(qty) || qty <= 0) return alert("❌ Invalid quantity");
+
+      const total = item.price * qty;
+
+      // Show order summary
+      const summary = document.getElementById("orderSummary");
+      summary.innerHTML = `
+        <h3>✅ Order Placed!</h3>
+        <p><strong>Item:</strong> ${item.name}</p>
+        <p><strong>Price:</strong> ₹${item.price}</p>
+        <p><strong>Quantity:</strong> ${qty}</p>
+        <p><strong>Total:</strong> ₹${total}</p>
+      `;
+
+      // Save order in localStorage
+      placeOrder(item, qty);
+
+      // Redirect after 2 seconds
+      setTimeout(() => {
+        window.location.href = "lo.html";
+      }, 2000);
+    }
+
+    // ✅ Add to Cart function
+    function addToCart() {
+      const qty = parseInt(document.getElementById("qty").value);
+      if (!item) return alert("❌ No item selected");
+      if (isNaN(qty) || qty <= 0) return alert("❌ Invalid quantity");
+
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      // Add quantity & total
+      const cartItem = {
+        ...item,
+        quantity: qty,
+        total: item.price * qty
+      };
+
+      cart.push(cartItem);
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      // Show confirmation
+      const summary = document.getElementById("orderSummary");
+      summary.innerHTML = `
+        <h3>🛒 Added to Cart!</h3>
+        <p><strong>Item:</strong> ${item.name}</p>
+        <p><strong>Price:</strong> ₹${item.price}</p>
+        <p><strong>Quantity:</strong> ${qty}</p>
+        <p><strong>Total:</strong> ₹${cartItem.total}</p>
+      `;
+
+      // Redirect after 2 seconds
+      setTimeout(() => {
+        window.location.href = "lo.html";
+      }, 2000);
+    }
+    function goBackToMenu() {
+  window.location.href = "lo.html"; // Redirect to main menu
+   }
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+  background-image: url("Screenshot\ 2025-10-17\ 045859.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.Login {
+  background-color: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  width: 350px;
+  text-align: center;
+}
+
+/* Forget Password button under password */
+.forgot-password {
+  text-align: right; /* button aligned right under password */
+  margin-top: 5px;
+}
+
+.forgot-btn {
+  background: none;
+  border: none;
+  color: #0984e3;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+  padding: 0;
+}
+
+.forgot-btn:hover {
+  color: #74b9ff;
+  text-decoration: underline;
+}
+
+/* Input fields */
+input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  margin-bottom: 5px;
+}
+
+/* Sign In button */
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #0984e3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+button:hover {
+  background-color: #74b9ff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* General Layout */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background-color: #f8fafc;
+}
+
+/* Header */
+header {
+  background-color: #0d9488;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-bar input {
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+.nav-links a {
+  margin-left: 15px;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Menu Section */
+.menu {
+  text-align: center;
+  padding: 30px;
+}
+
+.menu-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.card {
+  width: 200px;
+  height: 290px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 10px;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+.card img {
+  width: 100%;
+  height: 150px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.card h3 {
+  margin: 10px 0 5px;
+  color: #0f172a;
+}
+
+.card p {
+  color: #475569;
+}
+
+.card button {
+  background-color: #f97316;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Footer */
+footer {
+  background-color: #0d9488;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+footer button {
+  background-color: #f97316;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Cart Modal */
+.cart-modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+}
+
+.cart-content {
+  background-color: white;
+  margin: 8% auto;
+  padding: 20px;
+  border-radius: 12px;
+  width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.cart-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.cart-content li {
+  background: #f3f4f6;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.checkout {
+  margin-top: 10px;
+  background: #0d9488;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
