@@ -6,9 +6,13 @@ A responsive food ordering demo built with HTML, CSS, and JavaScript. It support
 
 This repository is a static, browser-only prototype with no server-side backend or database. Customer passwords are salted and hashed in the browser, while menu, customer, cart, and order data are stored in local storage. This is demo-only authentication: a user can edit local browser data, and the administrator demo credentials below are public in the source. Use a server, database, and proper authentication before handling real customers or payments.
 
-## 🌐 Live Demo
+## Live Site
 
-🔗 https://mahesh549990.github.io/miniproject/
+[Open the deployed app](https://food-delivery-system-tmuw.onrender.com/)
+
+## GitHub Repository
+
+[MAHESH549990/miniproject](https://github.com/MAHESH549990/miniproject)
 
 ## 🌟 Features
 
