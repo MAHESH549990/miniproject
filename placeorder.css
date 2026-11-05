@@ -12,7 +12,7 @@
 /*  BODY & BACKGROUND  */
 /* ---------------------------------- */
 body {
-  background: url('backgroundimages.png') no-repeat center center fixed;
+  background: url('assets/images/backgroundimages.png') no-repeat center center fixed;
   background-size: cover;       /* full-screen sharp background */
   min-height: 100vh;
   display: flex;

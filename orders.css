@@ -9,7 +9,7 @@
 /* BODY & BACKGROUND */
 /* ---------------------------------- */
 body {
-  background: url('total.png.png') no-repeat center center fixed;
+  background: url('assets/images/total.png.png') no-repeat center center fixed;
   background-size: cover;
   min-height: 100vh;
   padding: 20px;

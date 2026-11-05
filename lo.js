@@ -1,238 +1,191 @@
-// ===== INITIALIZE MENU =====
-let menu = JSON.parse(localStorage.getItem("menu")) || [
-  { name: "Pizza", price: 300, img: "large-mixed-pizza-with-meat.jpg" },
-  { name: "Momos", price: 100, img: "top-view-japanese-dumplings-assortment.jpg" },
-  { name: "Egg Rice", price: 150, img: "Screenshot 2025-10-17 045008.png" },
-  { name: "Noodles", price: 50, img: "screenshot2.png" },
-  { name: "Pav Bhaji", price: 80, img: "Screenshot 2025-10-17 053246.png" },
-  { name: "Roti Sabji", price: 100, img: "Screenshot 2025-10-17 053834.png" },
-  { name: "Paneer Biryani", price: 180, img: "paneer.png" },
-  { name: "Ice Cream", price: 40, img: "icecream.png" }
+/* Shared client-side data and page logic. Storage is scoped per customer. */
+const STORAGE = {
+  menu: "menu",
+  users: "users",
+  orders: "userOrders",
+  currentUser: "currentUser",
+  admin: "adminAuthenticated"
+};
+const DEFAULT_MENU = [
+  { name: "Pizza", price: 300, img: "assets/images/large-mixed-pizza-with-meat.jpg" },
+  { name: "Momos", price: 100, img: "assets/images/top-view-japanese-dumplings-assortment.jpg" },
+  { name: "Egg Rice", price: 150, img: "assets/images/Screenshot 2025-10-17 045008.png" },
+  { name: "Noodles", price: 50, img: "assets/images/screenshot2.png" },
+  { name: "Pav Bhaji", price: 80, img: "assets/images/Screenshot 2025-10-17 053246.png" },
+  { name: "Roti Sabji", price: 100, img: "assets/images/Screenshot 2025-10-17 053834.png" },
+  { name: "Paneer Biryani", price: 180, img: "assets/images/paneer.png" },
+  { name: "Ice Cream", price: 40, img: "assets/images/icecream.png" }
 ];
 
-// Save default menu if localStorage is empty
-if (!localStorage.getItem("menu")) localStorage.setItem("menu", JSON.stringify(menu));
-else menu = JSON.parse(localStorage.getItem("menu"));
+function readStore(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
+  catch { return fallback; }
+}
+function writeStore(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+function getCurrentUser() { return localStorage.getItem(STORAGE.currentUser); }
+function cartKey() { return `cart:${getCurrentUser() || "guest"}`; }
+function getCart() { return readStore(cartKey(), []); }
+function saveCart(cart) { writeStore(cartKey(), cart); }
+function getMenu() {
+  const stored = readStore(STORAGE.menu, null);
+  if (Array.isArray(stored)) {
+    // Upgrade image paths saved by earlier versions when assets were in the root.
+    const normalized = stored.map(item => ({
+      ...item,
+      img: typeof item.img === "string" && !item.img.startsWith("assets/images/") && !item.img.startsWith("data:")
+        ? `assets/images/${item.img}` : item.img
+    }));
+    writeStore(STORAGE.menu, normalized);
+    return normalized;
+  }
+  writeStore(STORAGE.menu, DEFAULT_MENU);
+  return DEFAULT_MENU.slice();
+}
+let menu = getMenu();
 
-// ===== INITIALIZE STORAGE =====
-if (!localStorage.getItem("cart")) localStorage.setItem("cart", JSON.stringify([]));
-if (!localStorage.getItem("userOrders")) localStorage.setItem("userOrders", JSON.stringify([]));
-if (!localStorage.getItem("users")) localStorage.setItem("users", JSON.stringify([]));
-
-// ===== RENDER MENU =====
-function renderMenu(menuItems = menu, isHomePage = true) {
+function money(value) { return `₹${Number(value || 0).toLocaleString("en-IN")}`; }
+function setText(element, value) { if (element) element.textContent = value; }
+function requireCustomer() {
+  if (getCurrentUser()) return true;
+  alert("Please sign in to continue.");
+  window.location.href = "index.html";
+  return false;
+}
+function renderMenu(items = menu) {
   const container = document.getElementById("menuContainer");
   if (!container) return;
-  container.innerHTML = "";
-
-  menuItems.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "food-item";
-
-    div.innerHTML = `
-      <img src="${item.img}" alt="${item.name}" width="150">
-      <h3>${item.name}</h3>
-      <p>₹${item.price}</p>
-      <button class="place-order">Place Order</button>
-      ${!isHomePage ? `<button class="add-to-cart">Add to Cart</button>` : ""}
-    `;
-
-    div.querySelector(".place-order").addEventListener("click", () => {
+  container.replaceChildren();
+  if (!items.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty-state";
+    empty.textContent = "No dishes match your search. Try another name.";
+    container.append(empty);
+    return;
+  }
+  items.forEach(item => {
+    const card = document.createElement("article");
+    card.className = "food-item";
+    const image = document.createElement("img");
+    image.src = item.img || "assets/images/total.png.png";
+    image.alt = item.name;
+    image.loading = "lazy";
+    image.onerror = () => { image.src = "assets/images/total.png.png"; };
+    const title = document.createElement("h3");
+    title.textContent = item.name;
+    const price = document.createElement("p");
+    price.className = "food-price";
+    price.textContent = money(item.price);
+    const button = document.createElement("button");
+    button.className = "place-order";
+    button.textContent = "Choose options";
+    button.addEventListener("click", () => {
       localStorage.setItem("selectedItem", JSON.stringify(item));
       window.location.href = "placeorder.html";
     });
-
-    if (!isHomePage) {
-      div.querySelector(".add-to-cart").addEventListener("click", () => {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        cart.push(item);
-        localStorage.setItem("cart", JSON.stringify(cart));
-        alert(`🛒 ${item.name} added to cart!`);
-      });
-    }
-
-    container.appendChild(div);
-  });
-}
-
-// ===== SEARCH FUNCTION =====
-function searchFood() {
-  const input = document.getElementById("searchInput");
-  if (!input) return;
-  const filtered = menu.filter(item =>
-    item.name.toLowerCase().includes(input.value.toLowerCase())
-  );
-  renderMenu(filtered, true); // true = only Place Order button
-}
-
-// ===== PLACE ORDER FUNCTION =====
-function placeOrder(item, quantity) {
-  const currentUser = localStorage.getItem("currentUser");
-  if (!currentUser) {
-    alert("⚠️ Please login first!");
-    window.location.href = "index.html";
-    return;
-  }
-
-  const total = item.price * quantity;
-
-  let userOrders = JSON.parse(localStorage.getItem("userOrders")) || [];
-  let existing = userOrders.find(u => u.email === currentUser);
-
-  const orderData = {
-    name: item.name,
-    price: item.price,
-    quantity: quantity,
-    total: total,
-    time: new Date().toLocaleString()
-  };
-
-  if (existing) {
-    existing.orders.push(orderData);
-  } else {
-    userOrders.push({
-      email: currentUser,
-      orders: [orderData]
+    const cartButton = document.createElement("button");
+    cartButton.className = "add-to-cart-card button-secondary";
+    cartButton.textContent = "Add to cart";
+    cartButton.addEventListener("click", () => {
+      if (!addToCart(item)) return;
+      cartButton.textContent = "Added to cart";
+      setTimeout(() => { cartButton.textContent = "Add to cart"; }, 1100);
     });
-  }
+    const actions = document.createElement("div");
+    actions.className = "food-actions-row";
+    actions.append(button, cartButton);
+    card.append(image, title, price, actions);
+    container.append(card);
+  });
+}
+function searchFood() {
+  const value = (document.getElementById("searchInput")?.value || "").trim().toLowerCase();
+  renderMenu(menu.filter(item => item.name.toLowerCase().includes(value)));
+}
+function viewCart() { if (requireCustomer()) window.location.href = "cart.html"; }
+function viewOrders() { if (requireCustomer()) window.location.href = "orders.html"; }
 
-  localStorage.setItem("userOrders", JSON.stringify(userOrders));
+function addToCart(item, quantity = 1) {
+  if (!requireCustomer()) return false;
+  const cart = getCart();
+  const found = cart.find(entry => entry.name === item.name && entry.price === item.price);
+  if (found) found.quantity += quantity;
+  else cart.push({ name: item.name, price: Number(item.price), img: item.img, quantity });
+  saveCart(cart);
+  return true;
+}
+function placeOrder(item, quantity = 1) {
+  if (!requireCustomer()) return false;
+  const email = getCurrentUser();
+  const orders = readStore(STORAGE.orders, []);
+  let customer = orders.find(entry => entry.email === email);
+  if (!customer) { customer = { email, orders: [] }; orders.push(customer); }
+  customer.orders.push({
+    id: globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    name: item.name, price: Number(item.price), quantity,
+    total: Number(item.price) * quantity, status: "Received", time: new Date().toISOString()
+  });
+  writeStore(STORAGE.orders, orders);
+  return true;
 }
 
-
-// ===== VIEW CART =====
-function viewCart() {
-  window.location.href = "cart.html";
-}
-
-// ===== VIEW ORDERS =====
-function viewOrders() {
-  window.location.href = "orders.html";
-}
-
-// ===== ADMIN FUNCTIONS =====
 function addFood() {
-  const name = document.getElementById("foodName").value.trim();
-  const price = parseInt(document.getElementById("foodPrice").value);
-  const imgInput = document.getElementById("foodImg");
-
-  if (!name || isNaN(price) || price <= 0) {
-    alert("Please enter valid name and price.");
-    return;
-  }
-
-  let img = "default.png";
-  if (imgInput.files && imgInput.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      img = e.target.result;
-      addItemToMenu(name, price, img);
-    };
-    reader.readAsDataURL(imgInput.files[0]);
-  } else {
-    addItemToMenu(name, price, img);
-  }
+  const nameInput = document.getElementById("foodName");
+  const priceInput = document.getElementById("foodPrice");
+  const imageInput = document.getElementById("foodImg");
+  const name = nameInput.value.trim();
+  const price = Number(priceInput.value);
+  if (!name || !Number.isFinite(price) || price <= 0) return alert("Enter a dish name and a price above zero.");
+  if (menu.some(item => item.name.toLowerCase() === name.toLowerCase())) return alert("That dish is already on the menu.");
+  const add = img => {
+    menu.push({ name, price, img });
+    writeStore(STORAGE.menu, menu);
+    renderAdminTable(); renderMenu();
+    nameInput.value = ""; priceInput.value = ""; imageInput.value = "";
+  };
+  const file = imageInput.files?.[0];
+  if (!file) return add("assets/images/total.png.png");
+  if (!file.type.startsWith("image/") || file.size > 700_000) return alert("Choose an image under 700 KB.");
+  const reader = new FileReader();
+  reader.onload = () => add(reader.result);
+  reader.onerror = () => alert("The image could not be read. Please try another file.");
+  reader.readAsDataURL(file);
 }
-
-function addItemToMenu(name, price, img) {
-  menu.push({ name, price, img });
-  localStorage.setItem("menu", JSON.stringify(menu));
-  renderAdminTable();
-  renderMenu(menu, false);
-  alert(`${name} added to menu!`);
-  document.getElementById("foodName").value = "";
-  document.getElementById("foodPrice").value = "";
-  if (document.getElementById("foodImg")) document.getElementById("foodImg").value = "";
-}
-
 function removeFood() {
-  const name = document.getElementById("removeName").value.trim();
-  const index = menu.findIndex(item => item.name.toLowerCase() === name.toLowerCase());
-
-  if (index === -1) {
-    alert(`${name} not found in menu.`);
-    return;
-  }
-
-  menu.splice(index, 1);
-  localStorage.setItem("menu", JSON.stringify(menu));
-  renderAdminTable();
-  renderMenu(menu, false);
-  alert(`${name} removed from menu!`);
-  document.getElementById("removeName").value = "";
+  const input = document.getElementById("removeName");
+  const name = input.value.trim();
+  const next = menu.filter(item => item.name.toLowerCase() !== name.toLowerCase());
+  if (!name || next.length === menu.length) return alert("That dish was not found.");
+  menu = next; writeStore(STORAGE.menu, menu); renderAdminTable(); renderMenu(); input.value = "";
 }
-
-// ===== ADMIN TABLE =====
 function renderAdminTable() {
-  const tableBody = document.querySelector("#foodTable tbody");
-  if (!tableBody) return;
-
-  tableBody.innerHTML = "";
+  const body = document.querySelector("#foodTable tbody");
+  if (!body) return;
+  body.replaceChildren();
   menu.forEach((item, index) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${index + 1}</td>
-      <td>${item.name}</td>
-      <td>₹${item.price}</td>
-    `;
-    tableBody.appendChild(row);
+    const row = body.insertRow();
+    [String(index + 1), item.name, money(item.price)].forEach(value => { const cell = row.insertCell(); cell.textContent = value; });
   });
 }
-
-// ===== CUSTOMER TABLE =====
 function renderCustomerTable() {
-  const tableBody = document.querySelector("#customerTable tbody");
-  if (!tableBody) return;
-
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  let userOrders = JSON.parse(localStorage.getItem("userOrders")) || [];
-
-  tableBody.innerHTML = "";
+  const body = document.querySelector("#customerTable tbody");
+  if (!body) return;
+  body.replaceChildren();
+  const users = readStore(STORAGE.users, []);
+  const orders = readStore(STORAGE.orders, []);
   users.forEach((user, index) => {
-    const orderData = userOrders.find(o => o.email === user.email);
-    const orders = orderData && orderData.orders.length > 0
-      ? orderData.orders.map(o => `${o.name} (₹${o.price})`).join(", ")
-      : "No Orders Yet";
-
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${index + 1}</td>
-      <td>${user.email}</td>
-      <td>${user.lastVisit || "First Visit"}</td>
-      <td>${orders}</td>
-    `;
-    tableBody.appendChild(row);
+    const customerOrders = orders.find(entry => entry.email === user.email)?.orders || [];
+    const row = body.insertRow();
+    [String(index + 1), user.email, user.lastVisit || "First visit", customerOrders.length ? `${customerOrders.length} order(s)` : "No orders yet"]
+      .forEach(value => { const cell = row.insertCell(); cell.textContent = value; });
   });
 }
-
-// ===== UPDATE LAST VISIT =====
-function updateLastVisit(email) {
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  const existingUser = users.find(u => u.email === email);
-
-  if (existingUser) {
-    existingUser.lastVisit = new Date().toLocaleString();
-  } else {
-    users.push({ email, lastVisit: new Date().toLocaleString() });
-  }
-
-  localStorage.setItem("users", JSON.stringify(users));
-  localStorage.setItem("currentUser", email);
-}
-
-// ===== INITIAL LOAD =====
 document.addEventListener("DOMContentLoaded", () => {
-  menu = JSON.parse(localStorage.getItem("menu")) || [];
-  renderMenu(menu, true); // Home page: only Place Order
-  renderAdminTable();
-  renderCustomerTable();
-
-  const searchInput = document.getElementById("searchInput");
-  if (searchInput) searchInput.addEventListener("input", searchFood);
-
-  const addToCartBtn = document.getElementById("addToCartBtn");
-  if (addToCartBtn) addToCartBtn.addEventListener("click", viewCart);
-
-  const viewOrderBtn = document.getElementById("viewOrderBtn");
-  if (viewOrderBtn) viewOrderBtn.addEventListener("click", viewOrders);
+  menu = getMenu();
+  renderMenu(); renderAdminTable(); renderCustomerTable();
+  document.getElementById("searchInput")?.addEventListener("input", searchFood);
+  document.getElementById("addToCartBtn")?.addEventListener("click", viewCart);
+  document.getElementById("viewOrderBtn")?.addEventListener("click", viewOrders);
+  if (document.getElementById("adminDashboard") && sessionStorage.getItem(STORAGE.admin) !== "true") {
+    window.location.replace("adminlogin.html");
+  }
 });

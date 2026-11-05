@@ -1,6 +1,10 @@
-# 🍽️ Food Ordering Web Application
+# Saffron & Stone — Food Ordering Demo
 
-A responsive Food Ordering Web Application built using HTML, CSS, and JavaScript. The application allows users to browse food items, add products to a cart, place orders, and manage orders through an admin dashboard.
+A responsive food ordering demo built with HTML, CSS, and JavaScript. It supports browsing the menu, customer-scoped carts and order history, and a local admin menu dashboard.
+
+## Project status
+
+This repository is a static, browser-only prototype with no server-side backend or database. Customer passwords are salted and hashed in the browser, while menu, customer, cart, and order data are stored in local storage. This is demo-only authentication: a user can edit local browser data, and the administrator demo credentials below are public in the source. Use a server, database, and proper authentication before handling real customers or payments.
 
 ## 🌐 Live Demo
 
@@ -41,11 +45,15 @@ miniproject/
 ├── orders.html
 ├── admin.html
 ├── adminlogin.html
-├── CSS Files
-├── JavaScript Files
-├── Images
-└── README.md
+├── *.css
+├── *.js
+├── polish.css
+├── README.md
+└── assets/
+    └── images/
 ```
+
+All bundled food, background, and team photos are kept in `assets/images/`. Images uploaded from the admin page remain in this browser's local storage.
 
 ## 🚀 How to Run
 
@@ -54,7 +62,7 @@ miniproject/
 3. Browse food items and place orders.
 4. Use the admin panel to manage orders.
 
-## 🔑 Demo Admin Login
+## Demo Admin Login
 
 For demonstration purposes:
 
@@ -62,7 +70,7 @@ Email: [mohanbhattadmin@gmail.com](mailto:mohanbhattadmin@gmail.com)
 
 Password: mahesh7668
 
-> Note: These credentials are intended only for testing the project.
+These credentials are hard-coded for local demonstration only. The admin page uses a tab session flag to keep the demo flow clear; this does not provide security against a user who can access the browser or edit local storage.
 
 ## ✨ Key Functionalities
 

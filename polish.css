@@ -1,0 +1,55 @@
+/* Shared layout refinements */
+footer { display: flex; align-items: center; flex-wrap: wrap; }
+.footer-link { color: var(--olive); font-weight: 700; text-decoration: none; padding: .6rem .85rem; border-left: 1px solid var(--line); }
+.food-actions-row { display: grid; gap: .5rem; margin: auto 1rem 0; }
+.food-item .food-actions-row button { width: 100%; margin: 0; }
+.food-item .add-to-cart-card { background: #efe9dd; color: var(--ink); }
+
+/* Keep interactions clear without motion-heavy hover effects. */
+button, .button, .food-item, .nav-links a { transition: none; transform: none !important; }
+button:hover, .button:hover { box-shadow: none; transform: none; background: var(--accent-dark); }
+.button-secondary:hover, .food-item .add-to-cart-card:hover { background: #e6ddcd; color: var(--ink); }
+.food-item:hover { transform: none; box-shadow: none; }
+.text-button:hover { background: transparent; box-shadow: none; transform: none; text-decoration: underline; }
+
+/* Admin dashboard */
+.admin-header { max-width: none; margin: 0; padding: 1.1rem clamp(1rem, 5vw, 5rem); text-align: left; }
+.admin-header .eyebrow { margin: 0; }
+.admin-header h1 { font-size: 1.8rem; margin: .2rem 0 0; }
+.admin-header .nav-links { display: flex; gap: .65rem; }
+.admin-header .nav-links a { background: #efe9dd; }
+.admin-header button { margin: 0; }
+.admin-container { display: grid; grid-template-columns: 1fr 1fr; align-items: start; max-width: 1440px; margin: 2rem auto; padding: 0 clamp(1rem, 5vw, 5rem); border: 0; background: transparent; box-shadow: none; }
+.admin-container section { min-width: 0; padding: clamp(1.2rem, 2.5vw, 2rem); }
+.admin-container .food-actions { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; }
+.admin-container .food-actions > div:first-child p:last-child { margin-bottom: 0; }
+.admin-container .food-actions h2, .admin-container h2 { margin: .2rem 0 .8rem; font: 700 1.55rem 'Playfair Display', Georgia, serif; }
+.admin-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; align-items: end; }
+.admin-form-grid label, .admin-remove label { display: grid; gap: .4rem; font-size: .88rem; font-weight: 700; color: var(--ink); }
+.admin-form-grid input, .admin-remove input { width: 100%; min-width: 0; }
+.admin-form-grid .image-field { grid-column: 1; }
+.image-field span { font-weight: 400; color: var(--muted); }
+.admin-form-grid > button { height: 48px; margin: 0; }
+.admin-remove { grid-column: 2; display: grid; grid-template-columns: 1fr auto; gap: .7rem; align-items: end; padding-top: 1rem; border-top: 1px solid var(--line); }
+.admin-remove label { grid-column: 1 / -1; }
+.admin-remove button { margin: 0; }
+.admin-container .table-wrap { margin-bottom: 0; }
+.admin-container table { min-width: 520px; }
+
+@media (max-width: 850px) {
+  .admin-container { grid-template-columns: 1fr; }
+  .admin-container .food-actions { grid-column: auto; grid-template-columns: 1fr; }
+  .admin-remove { grid-column: auto; }
+}
+@media (max-width: 600px) {
+  footer { gap: .5rem; }
+  .footer-link { border-left: 0; padding: .4rem .6rem; }
+  .admin-header { align-items: flex-start; }
+  .admin-header .nav-links { flex-wrap: wrap; justify-content: flex-end; }
+  .admin-form-grid { grid-template-columns: 1fr; }
+  .admin-form-grid .image-field { grid-column: auto; }
+  .admin-remove { grid-template-columns: 1fr; }
+  .admin-remove label { grid-column: auto; }
+  .admin-container table { min-width: 500px; }
+}
+.admin-container { width: min(100% - 2rem, 1440px); }
